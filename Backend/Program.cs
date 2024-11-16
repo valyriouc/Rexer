@@ -8,22 +8,8 @@ internal enum CommandVariant
     Move,
     Save,
     Back,
-    Forth
-}
-
-public class ArgParsingException : Exception
-{
-    public ArgParsingException()
-    {
-    }
-
-    public ArgParsingException(string message) : base(message)
-    {
-    }
-
-    public ArgParsingException(string message, Exception inner) : base(message, inner)
-    {
-    }
+    Forth,
+    Git
 }
 
 internal static class App
@@ -50,6 +36,7 @@ internal static class App
             {
                 CommandVariant.Move => MoveCommand.FromArgs(args[1..]),
                 CommandVariant.Save => SaveCommand.FromArgs(args[1..]),
+                CommandVariant.Git => 
                 _ => throw new ArgParsingException()
             };
 
