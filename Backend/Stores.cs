@@ -231,15 +231,17 @@ internal class ConfigStore
 
 internal static class StoreHelper
 {
+    public static string ConfigDirectory { get; } = Path.Combine(App.BasePath, "config");
+    
     public static HistoryStore History { get; private set; }
 
     public static ConfigStore Config { get; private set; }
 
     public static async Task InitAsync(CancellationToken cancellationToken)
     {
-        if (!Directory.Exists(Path.Combine(App.BasePath, "config")))
+        if (!Directory.Exists(ConfigDirectory))
         {
-            Directory.CreateDirectory(Path.Combine(App.BasePath, "config"));
+            Directory.CreateDirectory(ConfigDirectory);
         }
         
         History = await HistoryStore.GetInstanceAsync(cancellationToken);

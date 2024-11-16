@@ -36,7 +36,7 @@ internal static class App
             {
                 CommandVariant.Move => MoveCommand.FromArgs(args[1..]),
                 CommandVariant.Save => SaveCommand.FromArgs(args[1..]),
-                CommandVariant.Git => 
+                CommandVariant.Git => GitCommand.FromArgs(args[1..]),
                 _ => throw new ArgParsingException()
             };
 
