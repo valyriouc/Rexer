@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -13,7 +14,8 @@ public class GitCommand : IArgCommand
     {
         Create,
         List,
-        Config
+        Config,
+        Clone
     }
 
     private readonly IArgCommand _subCommand;
@@ -36,6 +38,7 @@ public class GitCommand : IArgCommand
             SubCommand.Create => GitCreateCommand.FromArgs(args[1..]),
             SubCommand.List => GitListCommand.FromArgs(args[1..]),
             SubCommand.Config => GitConfigCommand.FromArgs(args[1..]),
+            SubCommand.Clone => GitCloneCommand.FromArgs(args[1..]),
             _ => throw new ArgParsingException($"SubCommand '{args[0]}' is not supported.")
         };
 
@@ -50,8 +53,69 @@ public class GitCommand : IArgCommand
         }
         finally
         {
-            ((GithubInteractor)this._subCommand).Dispose();
+            if (this._subCommand is GithubInteractor interactor)
+            {
+                interactor.Dispose();
+            }
         }
+    }
+}
+
+file class GitCloneCommand : IArgCommand
+{
+    private static string CloneDirectory = "C:\\Users\\Valarius\\H4ck3r\\source";
+
+    private readonly string _repository;
+    private readonly string _directory;
+    
+    private GitCloneCommand(string repository)
+    {
+        if (string.IsNullOrWhiteSpace(repository))
+        {
+            throw new ArgumentNullException(nameof(repository));
+        }
+
+        _repository = repository;
+        _directory = Path.Combine(CloneDirectory, Path.GetFileNameWithoutExtension(_repository));
+    }
+    
+    public static IArgCommand FromArgs(string[] args)
+    {
+        string repository = string.Empty;
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            switch(args[i])
+            {
+                case "--url":
+                    repository = args[++i];
+                    break;
+                default:
+                    throw new ArgParsingException($"Unexpected argument '{args[i]}'.");
+            }
+        }
+
+        return new GitCloneCommand(repository);
+    }
+    
+    public async Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine($"Cloning {_repository} into {_directory}");
+        
+        using Process process = new Process();
+        process.StartInfo.FileName = "git.exe";
+        process.StartInfo.Arguments = $"clone {_repository} {_directory}";
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
+
+        process.Start();
+
+        while (!process.HasExited)
+        {
+            
+        }
+
+        await Task.CompletedTask;
     }
 }
 
@@ -258,7 +322,6 @@ file class GitCreateCommand : GithubInteractor, IArgCommand
         await SaveAsync(cancellationToken);
     }
 }
-
 
 /// <summary>
 /// List all repositories of the specified user 
