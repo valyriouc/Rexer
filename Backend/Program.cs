@@ -58,6 +58,6 @@ internal static class App
 
     private static void PrintHelp()
     {
-        
+        Console.Error.WriteLine("Help is coming soon...");
     }
 }
