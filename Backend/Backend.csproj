@@ -8,6 +8,11 @@
         <AssemblyName>Rexer</AssemblyName>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    </PropertyGroup>
+
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <OutputPath>C:\Users\Valarius\H4ck3r\wasteland</OutputPath>
     </PropertyGroup>
