@@ -15,11 +15,13 @@ internal class BackCommand : IArgCommand, IDescriptionProvider
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         string current = Environment.CurrentDirectory;
-        string lastOne = _historyStore.Pop();
-        _historyStore.Push(lastOne);
-        
+            
+        string lastMove = _historyStore.Pop();
         string last = _historyStore.Pop();
+        
+        _historyStore.Push(lastMove);
         _historyStore.Push(current);
+        _historyStore.Push(last);
         
         Console.WriteLine(last);
         await Task.CompletedTask;
