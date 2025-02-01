@@ -17,6 +17,12 @@ internal static class App
     
     internal static string BasePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) 
                                       ?? throw new DirectoryNotFoundException("Executing assembly must have a location!");
+
+    internal static List<string> CommandHelps =
+    [
+        SaveCommand.CreateDescription(),
+        MoveCommand.CreateDescription()
+    ];
     
     public static async Task Main(string[] args)
     {
@@ -58,6 +64,29 @@ internal static class App
 
     private static void PrintHelp()
     {
-        Console.Error.WriteLine("Help is coming soon...");
+        string banner =
+            """
+            |##########||   €€##########    \\\    ///   €€##########  |##########||
+            |_|        |||  €€               \\\  ///    €€            |_|        |||
+            |_|        |||  €€                \\\///     €€            |_|        |||
+            |_|########||   €€#####           /\\\/      €€#####       |_|########||
+            |_|  ||||       €€               ///\\\      €€            |_|  ||||
+            |_|   ||||      €€              ///  \\\     €€            |_|   ||||
+            |_|    ||||     €€##########   ///    \\\    €€##########  |_|    ||||
+            
+            Rexer is a tool suite which helps the user to simply different redundant tasks. 
+            The goal of the tool is increasing the work speed. the main target audience are software developers 
+            
+            Commands:
+            
+            """;
+        
+        Console.WriteLine(banner);
+
+        foreach (var commandHelp in CommandHelps)
+        {
+            Console.WriteLine(commandHelp);
+            Console.WriteLine();
+        }
     }
 }

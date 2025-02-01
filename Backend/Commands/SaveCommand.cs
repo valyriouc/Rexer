@@ -1,6 +1,6 @@
 ﻿namespace Backend;
 
-internal class SaveCommand : IArgCommand
+internal class SaveCommand : IArgCommand, IDescriptionProvider
 {
     private readonly HistoryStore _historyStore;
     private readonly ConfigStore _configStore;
@@ -70,5 +70,17 @@ internal class SaveCommand : IArgCommand
         
         this._historyStore.Push(this.Location);
         await Task.CompletedTask; 
+    }
+
+    public static string CreateDescription()
+    {
+        return """
+               Save - Stores a shortcut name associated with the current location.
+               Args:
+                -n  - The shortcut name of the location.
+
+               Example:
+               Rexer.exe save -n tmp
+               """;
     }
 }

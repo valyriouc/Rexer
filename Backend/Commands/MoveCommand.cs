@@ -3,7 +3,7 @@
 /// <summary>
 /// Enables the user to move faster in the file system to known places 
 /// </summary>
-public class MoveCommand : IArgCommand
+public class MoveCommand : IArgCommand, IDescriptionProvider
 {
     private HistoryStore HistoryStore { get; }
     
@@ -51,5 +51,17 @@ public class MoveCommand : IArgCommand
         this.HistoryStore.Push(path);
         Console.WriteLine(path);
         await Task.CompletedTask;
+    }
+
+    public static string CreateDescription()
+    {
+        return """
+               Move - Gets the user to the location associated with the provided name
+               Args:
+                -n  - The location name
+               
+               Example:
+               Rexer.exe move -n tmp
+               """;
     }
 }
