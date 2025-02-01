@@ -1,6 +1,6 @@
 ﻿namespace Backend;
 
-internal class BackCommand : IArgCommand
+internal class BackCommand : IArgCommand, IDescriptionProvider
 {
     private readonly HistoryStore _historyStore;
 
@@ -24,4 +24,12 @@ internal class BackCommand : IArgCommand
         Console.WriteLine(last);
         await Task.CompletedTask;
     }
+
+    public static string CreateDescription() =>
+        """
+        Back - Gets back to the last location
+
+        Example:
+        Rexer.exe back
+        """;
 }
