@@ -8,7 +8,8 @@ internal enum CommandVariant
     Move,
     Save,
     Back,
-    Git
+    Git,
+    Web
 }
 
 internal static class App
@@ -20,7 +21,8 @@ internal static class App
     internal static List<string> CommandHelps =
     [
         SaveCommand.CreateDescription(),
-        MoveCommand.CreateDescription()
+        MoveCommand.CreateDescription(),
+        WebCommand.CreateDescription(),
     ];
     
     public static async Task Main(string[] args)
@@ -43,6 +45,7 @@ internal static class App
                 CommandVariant.Save => SaveCommand.FromArgs(args[1..]),
                 CommandVariant.Git => GitCommand.FromArgs(args[1..]),
                 CommandVariant.Back => BackCommand.FromArgs(args[1..]),
+                CommandVariant.Web => WebCommand.FromArgs(args[1..]),
                 _ => throw new ArgParsingException()
             };
 
@@ -50,7 +53,7 @@ internal static class App
         }
         catch (ArgParsingException ex)
         {
-            PrintHelp();
+            PrintHelp(ex);
         }
         catch (Exception ex)
         {
@@ -60,6 +63,15 @@ internal static class App
         {
             await StoreHelper.SaveAsync(source.Token);
         }
+    }
+
+    private static void PrintHelp(ArgParsingException? ex)
+    {
+        PrintHelp();
+        
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(ex.Message);
+        Console.ResetColor();
     }
 
     private static void PrintHelp()
@@ -73,12 +85,12 @@ internal static class App
             |_|  ||||       €€               ///\\\      €€            |_|  ||||
             |_|   ||||      €€              ///  \\\     €€            |_|   ||||
             |_|    ||||     €€##########   ///    \\\    €€##########  |_|    ||||
-            
+
             Rexer is a tool suite which helps the user to simply different redundant tasks. 
             The goal of the tool is increasing the work speed. the main target audience are software developers 
-            
+
             Commands:
-            
+
             """;
         
         Console.WriteLine(banner);
