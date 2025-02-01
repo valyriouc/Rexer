@@ -15,9 +15,12 @@ internal class BackCommand : IArgCommand
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         string current = Environment.CurrentDirectory;
-        _historyStore.Pop();
+        string lastOne = _historyStore.Pop();
+        _historyStore.Push(lastOne);
+        
         string last = _historyStore.Pop();
         _historyStore.Push(current);
+        
         Console.WriteLine(last);
         await Task.CompletedTask;
     }

@@ -8,7 +8,6 @@ internal enum CommandVariant
     Move,
     Save,
     Back,
-    Forth,
     Git
 }
 
@@ -43,6 +42,7 @@ internal static class App
                 CommandVariant.Move => MoveCommand.FromArgs(args[1..]),
                 CommandVariant.Save => SaveCommand.FromArgs(args[1..]),
                 CommandVariant.Git => GitCommand.FromArgs(args[1..]),
+                CommandVariant.Back => BackCommand.FromArgs(args[1..]),
                 _ => throw new ArgParsingException()
             };
 
