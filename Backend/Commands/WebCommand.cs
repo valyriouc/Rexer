@@ -46,7 +46,7 @@ internal static class WebMethodExtensions
 /// </summary>
 public class WebCommand : IArgCommand, IDescriptionProvider
 {
-    private readonly HttpRequestMessage _request;
+    public readonly HttpRequestMessage _request;
     
     public WebCommand(HttpRequestMessage request)
     {

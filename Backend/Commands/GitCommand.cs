@@ -8,6 +8,9 @@ using System.Text.Json.Serialization;
 
 namespace Backend;
 
+/// <summary>
+/// Command-line tool to interact with github
+/// </summary>
 public class GitCommand : IArgCommand
 {
     private enum SubCommand
