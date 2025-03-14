@@ -9,7 +9,8 @@ internal enum CommandVariant
     Save,
     Back,
     Git,
-    Web
+    Web,
+    Grep
 }
 
 internal static class App
@@ -46,6 +47,7 @@ internal static class App
                 CommandVariant.Git => GitCommand.FromArgs(args[1..]),
                 CommandVariant.Back => BackCommand.FromArgs(args[1..]),
                 CommandVariant.Web => WebCommand.FromArgs(args[1..]),
+                CommandVariant.Grep => GrepCommand.FromArgs(args[1..]),
                 _ => throw new ArgParsingException()
             };
 
