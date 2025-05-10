@@ -7,6 +7,7 @@ public interface IArgCommand
     public Task ExecuteAsync(CancellationToken cancellationToken);
 }
 
+// todo: implement this interface in every command
 public interface IDescriptionProvider
 {
     public static abstract string CreateDescription();

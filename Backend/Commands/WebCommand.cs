@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace Backend;
 
 internal enum WebMethod
@@ -95,7 +93,7 @@ public class WebCommand : IArgCommand, IDescriptionProvider
                     i += 1;
                     break;
                 default:
-                    throw new ArgParsingException($"Unkown argument: {args[i]}");
+                    throw new ArgParsingException($"Unknown argument: {args[i]}");
             }
         }
 

@@ -8,7 +8,8 @@ file enum SubCommand
     Create,
     List,
     Config,
-    Clone
+    Clone,
+    Fire
 }
 
 /// <summary>
@@ -38,6 +39,7 @@ public class GitCommand : IArgCommand, IDescriptionProvider
             SubCommand.List => ListCommand.FromArgs(args[1..]),
             SubCommand.Config => ConfigCommand.FromArgs(args[1..]),
             SubCommand.Clone => CloneCommand.FromArgs(args[1..]),
+            SubCommand.Fire => GitFireCommand.FromArgs(args[1..]),
             _ => throw new ArgParsingException($"SubCommand '{args[0]}' is not supported.")
         };
 
@@ -81,6 +83,7 @@ file static class SubCommandExtensions
         SubCommand.List => "Lists all repositories",
         SubCommand.Config => "Configures the github account that should be used",
         SubCommand.Clone => "Clones the specified github repository to the source directory",
+        SubCommand.Fire => "Makes a git add, commit and push",
         _ => throw new ArgParsingException($"SubCommand '{self}' is not supported."),
     };
 }

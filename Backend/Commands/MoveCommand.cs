@@ -6,9 +6,9 @@
 public class MoveCommand : IArgCommand, IDescriptionProvider
 {
     private HistoryStore HistoryStore { get; }
-    
+
     private ConfigStore ConfigStore { get; }
-    
+
     private string LocationShortcut { get; }
 
     private MoveCommand(HistoryStore historyStore, ConfigStore configStore, string locationShortcut)
@@ -47,6 +47,8 @@ public class MoveCommand : IArgCommand, IDescriptionProvider
 
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+        // What is the advantage of this implementation 
+        // Is windows independent
         string path = this.ConfigStore.FindSetting(this.LocationShortcut);
         this.HistoryStore.Push(path);
         Console.WriteLine(path);
