@@ -5,6 +5,9 @@ using Backend.Extensions;
 
 namespace Backend.Github;
 
+/// <summary>
+/// Creates a new GitHub repository 
+/// </summary>
 internal class CreateCommand : GithubInteractor, IArgCommand
 {
     [method: JsonConstructor]

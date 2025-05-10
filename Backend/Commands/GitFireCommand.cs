@@ -1,7 +1,7 @@
 namespace Backend;
 
 /// <summary>
-/// Makes git add, commit und push
+/// Makes git add, commit und push at one move
 /// </summary>
 public class GitFireCommand : IArgCommand
 {
@@ -35,7 +35,7 @@ public class GitFireCommand : IArgCommand
 
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"git add * && git commit -m {_message} && git push");
+        Console.WriteLine($"git add * && git commit -m \"{_message}\" && git push");
         return Task.CompletedTask;
     }
 }

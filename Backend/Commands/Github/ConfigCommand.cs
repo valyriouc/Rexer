@@ -1,5 +1,8 @@
 namespace Backend.Github;
 
+/// <summary>
+/// Configures the GitHub account
+/// </summary>
 internal class ConfigCommand : GithubInteractor, IArgCommand
 {
     private readonly string _accessToken;

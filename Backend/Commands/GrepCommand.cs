@@ -2,6 +2,9 @@ using System.Text.RegularExpressions;
 
 namespace Backend;
 
+/// <summary>
+/// A windows grep implementation via regex
+/// </summary>
 public class GrepCommand : IArgCommand
 {
     private readonly string _pattern;
