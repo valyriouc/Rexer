@@ -19,11 +19,12 @@ internal static class App
     internal static string BasePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) 
                                       ?? throw new DirectoryNotFoundException("Executing assembly must have a location!");
 
-    internal static List<string> CommandHelps =
+    private static List<string> CommandHelps =
     [
         SaveCommand.CreateDescription(),
         MoveCommand.CreateDescription(),
         WebCommand.CreateDescription(),
+        GitCommand.CreateDescription()
     ];
     
     public static async Task Main(string[] args)

@@ -10,6 +10,7 @@ public class GrepCommand : IArgCommand
     {
         _pattern = pattern;
     }
+    
     public static IArgCommand FromArgs(string[] args)
     {
         string? pattern = null;
@@ -39,9 +40,8 @@ public class GrepCommand : IArgCommand
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         int lineNumber = 0;
-        
-        string? line = string.Empty;
-        while ((line = Console.ReadLine()) != null)
+
+        while (Console.ReadLine() is { } line)
         {
             lineNumber += 1;
             if (!Regex.IsMatch(line, _pattern) || string.IsNullOrWhiteSpace(line))
