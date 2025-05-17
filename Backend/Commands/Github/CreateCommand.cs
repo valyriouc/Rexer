@@ -1,14 +1,25 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json.Serialization;
 using Backend.Extensions;
 
 namespace Backend.Github;
 
+file enum CreateArgument
+{
+    Name,
+    Description,
+    Url,
+    Private,
+    Template,
+    Help
+}
+
 /// <summary>
 /// Creates a new GitHub repository 
 /// </summary>
-internal class CreateCommand : GithubInteractor, IArgCommand
+internal class CreateCommand : GithubInteractor, IArgCommand, IDescriptionProvider
 {
     [method: JsonConstructor]
     private class GitNewRepoItem(
@@ -50,24 +61,28 @@ internal class CreateCommand : GithubInteractor, IArgCommand
         
         for (int i = 0; i < args.Length; i++)
         {
-            switch (args[i])
+            switch (args[i].ToEnum())
             {
-                case "--name":
+                case CreateArgument.Help:
+                    string help = CreateDescription();
+                    Console.WriteLine(help);
+                    break;  
+                case CreateArgument.Name:
                     name = args[i + 1];
                     i += 1;
                     break;
-                case "--desc":
+                case CreateArgument.Description:
                     description = args[i + 1];
                     i += 1;
                     break;
-                case "--url":
+                case CreateArgument.Url:
                     homepageUrl = args[i + 1];
                     i += 1;
                     break;
-                case "--private":
+                case CreateArgument.Private:
                     isPrivate = true;
                     break;
-                case "--template":
+                case CreateArgument.Template:
                     isTemplate = true;
                     break;
                 default:
@@ -109,5 +124,76 @@ internal class CreateCommand : GithubInteractor, IArgCommand
         }
         
         await SaveAsync(cancellationToken);
+    }
+
+    public static string CreateDescription()
+    {
+        StringBuilder sb = new();
+
+        string start =
+            """
+            This command will create a new github repository for the configured user.
+            """;
+        
+        sb.AppendLine(start);
+        sb.AppendLine("Arguments: ");
+        
+        foreach (CreateArgument value in Enum.GetValues<CreateArgument>())
+        {
+            sb.AppendLine($"{value.ToArgumentString()} - {value.GetDescription()}");
+        }
+        
+        return sb.ToString();
+    }
+}
+
+file static class LocalExtensions
+{
+    public static CreateArgument ToEnum(this string arg)
+    {
+        switch (arg)
+        {
+            case "--help":
+                return CreateArgument.Help;                
+            case "--name":
+                return CreateArgument.Name;
+            case "--desc":
+                return CreateArgument.Description;
+            case "--url":
+                return CreateArgument.Url;
+            case "--private":
+                return CreateArgument.Private;    
+            case "--template":
+                return CreateArgument.Template;
+            default:
+                throw new ArgParsingException($"Unrecognized argument '{arg}'.");
+        }
+    }
+
+    public static string ToArgumentString(this CreateArgument arg)
+    {
+        return arg switch
+        {
+            CreateArgument.Name => "--name",
+            CreateArgument.Description => "--desc",
+            CreateArgument.Url => "--url",
+            CreateArgument.Private => "--private",
+            CreateArgument.Template => "--template",
+            CreateArgument.Help => "--help",
+            _ => throw new NotSupportedException($"Unrecognized argument '{arg}'.")
+        };
+    }
+    
+    public static string GetDescription(this CreateArgument arg)
+    {
+        return arg switch
+        {
+            CreateArgument.Name => "The name of the repository",
+            CreateArgument.Description => "The description of the repository",
+            CreateArgument.Url => "The homepage url of the repository",
+            CreateArgument.Private => "Whether the repository is private/public",
+            CreateArgument.Template => "Whether the repository is a template",
+            _ => throw new NotSupportedException($"Unrecognized argument '{arg}'.")
+        };
     }
 }
